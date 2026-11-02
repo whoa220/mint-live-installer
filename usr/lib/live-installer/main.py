@@ -184,9 +184,9 @@ class InstallerWindow:
         text = Gtk.CellRendererText()
         for i in (partitioning.IDX_PART_PATH,
                   partitioning.IDX_PART_TYPE,
-                  partitioning.IDX_PART_DESCRIPTION,
                   partitioning.IDX_PART_MOUNT_AS,
                   partitioning.IDX_PART_FORMAT_AS,
+                  partitioning.IDX_PART_DESCRIPTION,
                   partitioning.IDX_PART_SIZE,
                   partitioning.IDX_PART_FREE_SPACE):
             col = Gtk.TreeViewColumn("", text, markup=i)  # real title is set in i18n()
@@ -418,9 +418,9 @@ class InstallerWindow:
         for col, title in zip(self.builder.get_object("treeview_disks").get_columns(),
                               (_("Device"),
                                _("Type"),
-                               _("Operating system"),
                                _("Mount point"),
                                _("Format as"),
+                               _("Operating system"),
                                _("Size"),
                                _("Free space"))):
             col.set_title(title)
@@ -748,7 +748,7 @@ class InstallerWindow:
         ''' Do some xml kung-fu and load the keyboard stuffs '''
         # Determine the layouts in use
         (keyboard_geom,
-         self.setup.keyboard_layout) = subprocess.getoutput("setxkbmap -query | awk '/^(model|layout)/{print $2}'").split()
+         self.setup.keyboard_layout) = subprocess.check_output("setxkbmap -query | awk '/^(model|layout)/{print $2}'", shell=True, encoding='utf-8').split()
         # Build the models
         from collections import defaultdict
         def _ListStore_factory():
